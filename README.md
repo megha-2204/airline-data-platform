@@ -955,5 +955,5 @@ The project combines batch and streaming architectures to demonstrate how modern
 
 Data Engineering | SQL | Python | Snowflake | dbt | Airflow | Kafka | Spark | AWS
 
-- GitHub: [Your GitHub Profile](https://github.com/megha-2204)
-- LinkedIn: [Your LinkedIn Profile](www.linkedin.com/in/megha-b-951458218)
+- GitHub: [My GitHub Profile](https://github.com/megha-2204)
+- LinkedIn: [My LinkedIn Profile](www.linkedin.com/in/megha-b-951458218)
