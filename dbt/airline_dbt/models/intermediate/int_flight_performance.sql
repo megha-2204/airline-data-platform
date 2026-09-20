@@ -1,0 +1,35 @@
+SELECT
+    f.FLIGHT_ID,
+    f.FLIGHT_NUMBER,
+    f.ORIGIN_AIRPORT_ID,
+    f.DESTINATION_AIRPORT_ID,
+    f.AIRCRAFT_ID,
+    f.DEPARTURE_TIME,
+    a.TOTAL_SEATS,
+
+    COALESCE(SUM(b.SEAT_COUNT), 0) AS SEATS_BOOKED,
+    COALESCE(SUM(b.TOTAL_AMOUNT), 0) AS TOTAL_REVENUE,
+
+    ROUND(
+            COALESCE(SUM(b.SEAT_COUNT), 0) * 100.0
+                / NULLIF(a.TOTAL_SEATS, 0),
+            2
+    ) AS OCCUPANCY_PERCENT
+
+FROM {{ ref('stg_flights') }} f
+
+JOIN {{ ref('stg_aircraft') }} a
+ON f.AIRCRAFT_ID = a.AIRCRAFT_ID
+
+    LEFT JOIN {{ ref('stg_bookings') }} b
+    ON f.FLIGHT_ID = b.FLIGHT_ID
+    AND b.STATUS = 'CONFIRMED'
+
+GROUP BY
+    f.FLIGHT_ID,
+    f.FLIGHT_NUMBER,
+    f.ORIGIN_AIRPORT_ID,
+    f.DESTINATION_AIRPORT_ID,
+    f.AIRCRAFT_ID,
+    f.DEPARTURE_TIME,
+    a.TOTAL_SEATS

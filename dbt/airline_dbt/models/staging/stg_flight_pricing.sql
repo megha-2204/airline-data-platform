@@ -1,0 +1,20 @@
+{{ config(
+    materialized='view'
+) }}
+
+SELECT
+    FLIGHT_ID,
+    TOTAL_SEATS,
+    DEPARTURE_TIME,
+    DAYS_TO_DEPARTURE,
+    BOOKING_COUNT,
+    SEATS_BOOKED,
+    OCCUPANCY,
+    SEARCH_COUNT,
+    SEARCH_SIGNAL,
+    BOOKING_REVENUE,
+    DEMAND_SCORE,
+    PRICE_MULTIPLIER,
+    SIMULATED_PRICE,
+    PROCESSED_AT
+FROM {{ source('raw', 'FLIGHT_PRICING') }}

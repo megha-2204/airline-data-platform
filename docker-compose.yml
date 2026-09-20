@@ -1,0 +1,27 @@
+services:
+
+  postgres:
+    image: postgres:15
+    container_name: airline_postgres
+
+    environment:
+      POSTGRES_DB: airline_db
+      POSTGRES_USER: airline_user
+      POSTGRES_PASSWORD: airline_pass
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./postgres/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U airline_user -d airline_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+
+volumes:
+  postgres_data:

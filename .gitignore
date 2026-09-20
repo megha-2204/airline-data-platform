@@ -1,0 +1,55 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+env/
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p8
+*.p12
+
+# Generated data
+data/
+*.csv
+*.json
+*.parquet
+
+# Airflow
+airflow/logs/
+airflow/logs/**
+logs/
+*.log
+
+# dbt
+dbt/airline_dbt/target/
+dbt/airline_dbt/dbt_packages/
+dbt/airline_dbt/logs/
+dbt/airline_dbt/.user.yml
+
+# Spark
+**/checkpoint/
+**/checkpoints/
+spark-warehouse/
+metastore_db/
+
+# Kafka
+kafka-logs/
+
+# macOS
+.DS_Store
+
+# IDE
+.idea/
+.vscode/
+
+# Temporary files
+*.tmp
+*.swp
+*.swo

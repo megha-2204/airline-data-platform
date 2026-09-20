@@ -1,0 +1,160 @@
+version: 2
+
+sources:
+  - name: raw
+    database: AIRLINE_DB
+    schema: RAW
+    tables:
+      - name: FLIGHT_PRICING
+
+models:
+  - name: stg_flights
+    description: "Cleaned flight data from the RAW layer."
+
+    columns:
+      - name: FLIGHT_ID
+        description: "Unique identifier for a flight."
+        tests:
+          - not_null
+          - unique
+
+      - name: FLIGHT_NUMBER
+        description: "Airline flight number."
+        tests:
+          - not_null
+
+      - name: AIRCRAFT_ID
+        description: "Aircraft assigned to the flight."
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_aircraft')
+                field: AIRCRAFT_ID
+
+  - name: stg_bookings
+    description: "Cleaned booking data from the RAW layer."
+
+    columns:
+      - name: BOOKING_ID
+        description: "Unique identifier for a booking."
+        tests:
+          - not_null
+          - unique
+
+      - name: CUSTOMER_ID
+        description: "Customer who made the booking."
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_customers')
+                field: CUSTOMER_ID
+
+      - name: FLIGHT_ID
+        description: "Flight associated with the booking."
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_flights')
+                field: FLIGHT_ID
+
+      - name: SEAT_COUNT
+        description: "Number of seats booked."
+        tests:
+          - not_null
+
+  - name: stg_customers
+    description: "Cleaned customer data from the RAW layer."
+
+    columns:
+      - name: CUSTOMER_ID
+        description: "Unique identifier for a customer."
+        tests:
+          - not_null
+          - unique
+
+      - name: EMAIL
+        description: "Customer email address."
+        tests:
+          - not_null
+          - unique
+
+  - name: stg_aircraft
+    description: "Cleaned aircraft data from the RAW layer."
+
+    columns:
+      - name: AIRCRAFT_ID
+        description: "Unique identifier for an aircraft."
+        tests:
+          - not_null
+          - unique
+
+      - name: AIRCRAFT_TYPE
+        description: "Type of aircraft."
+        tests:
+          - not_null
+
+      - name: TOTAL_SEATS
+        description: "Total seating capacity of the aircraft."
+        tests:
+          - not_null
+
+  - name: stg_payments
+    description: "Cleaned payment data from the RAW layer."
+
+    columns:
+      - name: PAYMENT_ID
+        description: "Unique identifier for a payment."
+        tests:
+          - not_null
+          - unique
+
+      - name: BOOKING_ID
+        description: "Booking associated with the payment."
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_bookings')
+                field: BOOKING_ID
+
+      - name: AMOUNT
+        description: "Payment amount."
+        tests:
+          - not_null
+
+      - name: PAYMENT_STATUS
+        description: "Status of the payment."
+        tests:
+          - not_null
+
+  - name: stg_cancellations
+    description: "Cleaned cancellation data from the RAW layer."
+
+    columns:
+      - name: CANCELLATION_ID
+        description: "Unique identifier for a cancellation."
+        tests:
+          - not_null
+          - unique
+
+      - name: BOOKING_ID
+        description: "Booking associated with the cancellation."
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_bookings')
+                field: BOOKING_ID
+
+      - name: CANCELLED_AT
+        description: "Timestamp when the booking was cancelled."
+        tests:
+          - not_null
+
+      - name: REFUND_AMOUNT
+        description: "Amount refunded for the cancelled booking."
+        tests:
+          - not_null
